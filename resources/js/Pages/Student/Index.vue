@@ -16,6 +16,19 @@
         </template>
 
         <div class="py-12">
+            <Transition enter-active-class="transition duration-300 ease-out"
+                enter-from-class="transform translate-x-10 opacity-0"
+                enter-to-class="transform translate-x-0 opacity-100"
+                leave-active-class="transition duration-200 ease-in"
+                leave-from-class="transform translate-x-0 opacity-100"
+                leave-to-class="transform translate-x-10 opacity-0">
+                <div v-if="page.props.flash.success && show"
+                    class="fixed top-20 right-5 z-50 p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-100 shadow-lg border border-green-300"
+                    role="alert">
+                    <span class="font-medium">{{ page.props.flash.success ? 'Success!' : 'Error!' }}</span> {{
+                        page.props.flash.success || page.props.flash.error }}
+                </div>
+            </Transition>
             <div class="mx-auto max-w-3xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
@@ -59,14 +72,22 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 
 const props = defineProps({
     students: Object,
     groupStudents: Object,
 });
-// console.log(props.students);
 
+const page = usePage();
+const show = ref(true);
+
+onMounted(() => {
+    setTimeout(() => {
+        show.value = false;
+    }, 5000);
+})
 const groupedData = computed(() => {
     const result = {};
     props.students.forEach(item => {
@@ -91,6 +112,18 @@ const editStudent = (id) => {
 };
 
 const deleteStudent = (id) => {
-    router.delete(route('student.destroy', id));
+    router.delete(route('student.destroy', id), {
+        onFinish: () => {
+            show.value = true;
+        },
+        onError: () => {
+            show.value = true;
+            page.props.flash.error = 'Student deleted failed';
+        },
+        onSuccess: () => {
+            show.value = true;
+            page.props.flash.success = 'Student deleted successfully';
+        },
+    });
 };
 </script>

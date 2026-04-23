@@ -10,12 +10,10 @@ use Illuminate\Support\Facades\Log;
 class DashboardController extends Controller
 {
     public function index() {
-        $students = StudentModel::with('class')->orderBy('class_id', 'desc')->get();
-        $teachers = TeacherModel::with('class')->orderBy('class_id', 'desc')->get();
+        $students = StudentModel::with('class')->orderBy('class_id', 'asc')->get();
+        $teachers = TeacherModel::with('class')->orderBy('class_id', 'asc')->get();
         $groupData = array_merge($students->toArray(), $teachers->toArray());
-        \Log::info('groupData before groupBy', [$groupData[0]]);
-        $groupData = collect($groupData)->groupBy('class_id')->values()->toArray();
-        \Log::info('groupData after groupBy', [$groupData[0]]);
+        $groupData = collect($groupData)->groupBy('class.class_name')->values()->toArray();
         return Inertia::render('Dashboard/Index', [
             'students' => $students,
             'teachers' => $teachers,

@@ -16,6 +16,18 @@
         </template>
 
         <div class="py-12">
+            <Transition enter-active-class="transition duration-300 ease-out"
+                enter-from-class="transform translate-x-10 opacity-0"
+                enter-to-class="transform translate-x-0 opacity-100"
+                leave-active-class="transition duration-200 ease-in"
+                leave-from-class="transform translate-x-0 opacity-100"
+                leave-to-class="transform translate-x-10 opacity-0">
+                <div v-if="page.props.flash.error && show"
+                    class="fixed top-20 right-5 z-50 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100 shadow-lg border border-red-300"
+                    role="alert">
+                    <span class="font-medium">{{ page.props.flash.error ? 'Error!' : 'Success!' }}</span> {{ page.props.flash.error || page.props.flash.success }}
+                </div>
+            </Transition>
             <div class="mx-auto max-w-xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
@@ -71,7 +83,16 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
 import Modal from '@/Components/Modal.vue';
+import { usePage } from '@inertiajs/vue3';
 
+const page = usePage();
+const show = ref(true);
+
+onMounted(() => {
+    setTimeout(() => {
+        show.value = false;
+    }, 5000);
+})
 const showModal = ref(false);
 
 defineProps({

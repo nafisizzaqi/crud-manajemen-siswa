@@ -30,17 +30,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(group, index) in mergedData" :key="index" class="hover:bg-gray-50 text-left border-b border-gray-200">
+                                    <tr v-for="(group, index) in mergedData" :key="index"
+                                    {{ mergedData }}
+                                        class="hover:bg-gray-50 text-left border-b border-gray-200">
                                         <td class="px-4 py-2">{{ group.className }}</td>
                                         <td class="px-4 py-2 flex-col gap-2">
 
-                                            <div v-for="student in group.students" :key="student.id" class="p-2 flex flex-col gap-2">
-                                                <span v-for="student in student.students" :key="student.id">{{ student.name ? student.name : '-' }}</span>
+                                            <div v-if="group.students.length > 0" v-for="student in group.students" :key="student.id"
+                                                class="p-2 flex flex-col gap-2">
+                                                <span>{{ student.name }}</span>
+                                            </div>
+                                            <div v-else class="p-2">
+                                                -
                                             </div>
                                         </td>
                                         <td class="px-4 py-2 flex-col gap-2">
-                                            <div v-for="teacher in group.teachers" :key="teacher.id" class="p-2 flex flex-col gap-2">
-                                                <span v-for="teacher in teacher.teachers" :key="teacher.id">{{ teacher.name ? teacher.name : '-' }}</span>
+                                            <div v-if="group.teachers.length > 0" v-for="teacher in group.teachers" :key="teacher.id"
+                                                class="p-2 flex flex-col gap-2">
+                                                <span>{{ teacher.name  }}</span>
+                                            </div>
+                                            <div v-else class="p-2">
+                                                -
                                             </div>
                                         </td>
 
@@ -64,62 +74,29 @@ const props = defineProps({
     teachers: Object,
 });
 
-const groupStudents = computed(() => {
-    const result = {};
-    props.students.forEach(item => {
-        if (!result[item.class_id]) {
-            result[item.class_id] = {
-                className: item.class.class_name,
-                students: [item],
-            }
-        } else {
-            result[item.class_id].students.push(item);
-        }
-    })
-    return Object.values(result);
-});
-console.log('groupStudents', groupStudents.value);
-const groupTeachers = computed(() => {
-    const result = {};
-    props.teachers.forEach(item => {
-        if (!result[item.class_id]) {
-            result[item.class_id] = {
-                className: item.class.class_name,
-                teachers: [item],
-            }
-        } else {
-            result[item.class_id].teachers.push(item);
-        }
-    })
-    return Object.values(result);
-});
-console.log('groupTeachers', groupTeachers.value);
-
 const mergedData = computed(() => {
-  const map = new Map();
+    const uniqueClass = [...new Set(
+        props.groupData
+                .flatMap(item => item)
+                .map(item => item.class.class_name)
+            )];
+    const map = new Map();
 
-  groupStudents.value.forEach(student => {
-    if (!map.has(student.className)) {
-      map.set(student.className, { className: student.className, students: [], teachers: [] });
-    }
-    map.get(student.className).students.push(student);
-  });
+    props.students.forEach(student => {
+        if (!map.has(student.class.class_name)) {
+            map.set(student.class.class_name, { className: student.class.class_name, students: [], teachers: [] });
+        }
+        map.get(student.class.class_name).students.push(student);
+    });
 
-  groupTeachers.value.forEach(teacher => {
-    if (!map.has(teacher.className)) {
-      map.set(teacher.className, { className: teacher.className, students: [], teachers: [] });
-    }
-    map.get(teacher.className).teachers.push(teacher);
-  });
+    props.teachers.forEach(teacher => {
+        if (!map.has(teacher.class.class_name)) {
+            map.set(teacher.class.class_name, { className: teacher.class.class_name, students: [], teachers: [] });
+        }
+        map.get(teacher.class.class_name).teachers.push(teacher);
+    });
 
-  return Array.from(map.values());
+    const result = Array.from(map.values());
+    return result;
 });
-console.log('mergedData', mergedData.value);
-
-const uniqueClass = [...new Set(
-    props.groupData
-            .flatMap(item => item)
-            .map(item => item.class.class_name)
-        )];
-// console.log('uniqueClass', uniqueClass);
 </script>
