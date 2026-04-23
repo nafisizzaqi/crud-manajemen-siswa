@@ -31,7 +31,6 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(group, index) in mergedData" :key="index" class="hover:bg-gray-50 text-left border-b border-gray-200">
-                                        <!-- <pre>{{ group }}</pre> -->
                                         <td class="px-4 py-2">{{ group.className }}</td>
                                         <td class="px-4 py-2 flex-col gap-2">
 
