@@ -23,7 +23,7 @@
                 leave-from-class="transform translate-x-0 opacity-100"
                 leave-to-class="transform translate-x-10 opacity-0">
                 <div v-if="page.props.flash.success && show"
-                    class="fixed top-20 right-5 z-50 p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-100 shadow-lg border border-green-300"
+                    class="fixed top-25 right-5 z-50 p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-100 shadow-lg border border-green-300"
                     role="alert">
                     <span class="font-medium">{{ page.props.flash.success ? 'Success!' : 'Error!' }}</span> {{
                         page.props.flash.success || page.props.flash.error }}

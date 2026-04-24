@@ -13,4 +13,9 @@ class StudentModel extends Model
     {
         return $this->belongsTo(ClassModel::class, 'class_id');
     }
+
+    public function parent()
+    {
+        return $this->hasOne(ParentModel::class, 'student_id');
+    }
 }

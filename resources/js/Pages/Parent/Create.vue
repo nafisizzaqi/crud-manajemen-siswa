@@ -7,25 +7,29 @@ import { usePage } from '@inertiajs/vue3';
 const page = usePage();
 const show = ref(true);
 
+const props = defineProps({
+    student: Object,
+});
+
 onMounted(() => {
     setTimeout(() => {
         show.value = false;
-    }, 5000);
+    },5000);
 })
 const form = useForm({
-    // name: '',
-    class_name: '',
+    student_id: '',
+    name: '',
 });
 
 const submit = () => {
     console.log(form.data());
-    form.post(route("class.store"), {
+    form.post(route("parent.store"), {
         onFinish: () => form.reset(),
     });
 };
 
-const backToClassIndex = () => {
-    router.visit(route('class.index'));
+const backToParentIndex = () => {
+    router.visit(route('parent.index'));
 };
 
 </script>
@@ -38,11 +42,11 @@ const backToClassIndex = () => {
         <template #header>
             <div class="flex justify-between items-center">
                 <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                    Add Class
+                    Add Parent
                 </h2>
 
-                <button class="bg-blue-500 text-white px-4 py-2 rounded-md" @click="backToClassIndex">
-                    Back to Class Index
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-md" @click="backToParentIndex">
+                    Back to Parent Index
                 </button>
             </div>
         </template>
@@ -65,8 +69,20 @@ const backToClassIndex = () => {
                     <div class="p-6 text-gray-900">
                         <form @submit.prevent="submit">
                             <div class="mb-4">
-                                <label for="class" class="block text-gray-700">Class:</label>
-                                <input v-model="form.class_name" type="text" id="class" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                                <label for="class" class="block text-gray-700">Parent:</label>
+                                <input v-model="form.name" type="text" id="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                            </div>
+                            <div class="mb-4">
+                                <label for="class" class="block text-gray-700">Student:</label>
+                                <div class="flex justify-between items-center gap-2">
+                                    <select v-model="form.student_id" name="student_id" id="student_id"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 flex-1">
+                                        <option value="">Select Student</option>
+                                        <option v-for="student in student" :key="student.id"
+                                            :value="student.id">{{
+                                                student.name }}</option>
+                                    </select>
+                                </div>
                             </div>
                             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">
                                 Save

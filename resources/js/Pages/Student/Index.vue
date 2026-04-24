@@ -23,7 +23,7 @@
                 leave-from-class="transform translate-x-0 opacity-100"
                 leave-to-class="transform translate-x-10 opacity-0">
                 <div v-if="page.props.flash.success && show"
-                    class="fixed top-20 right-5 z-50 p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-100 shadow-lg border border-green-300"
+                    class="fixed top-25 right-5 z-50 p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-100 shadow-lg border border-green-300"
                     role="alert">
                     <span class="font-medium">{{ page.props.flash.success ? 'Success!' : 'Error!' }}</span> {{
                         page.props.flash.success || page.props.flash.error }}
@@ -37,6 +37,7 @@
                                 <tr class="bg-gray-100 text-left font-semibold border-b border-gray-200">
                                     <th class="px-4 py-2">Class</th>
                                     <th class="px-4 py-2">Student Name</th>
+                                    <th class="px-4 py-2">Parent Name</th>
                                     <th class="px-4 py-2">Action</th>
                                 </tr>
                             </thead>
@@ -47,6 +48,12 @@
                                     <td class="px-4 py-2 flex-col gap-2">
                                         <div v-for="student in group.students" :key="student.id" class="p-2">
                                             <span>{{ student.name }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-2 flex-col gap-2">
+                                        <div v-for="student in group.students" :key="student.id"
+                                            class="p-2 flex flex-col gap-2">
+                                            <span>{{ student.parent ? student.parent.name : '-' }}</span>
                                         </div>
                                     </td>
                                     <td class="px-4 py-2 flex-col gap-2">
@@ -79,6 +86,7 @@ const props = defineProps({
     students: Object,
     groupStudents: Object,
 });
+console
 
 const page = usePage();
 const show = ref(true);

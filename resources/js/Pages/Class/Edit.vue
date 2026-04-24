@@ -67,7 +67,7 @@ const backToClassIndex = () => {
                 leave-from-class="transform translate-x-0 opacity-100"
                 leave-to-class="transform translate-x-10 opacity-0">
                 <div v-if="page.props.flash.error && show"
-                    class="fixed top-20 right-5 z-50 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100 shadow-lg border border-red-300"
+                    class="fixed top-25 right-5 z-50 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100 shadow-lg border border-red-300"
                     role="alert">
                     <span class="font-medium">{{ page.props.flash.error ? 'Error!' : 'Success!' }}</span> {{ page.props.flash.error || page.props.flash.success }}
                 </div>

@@ -36,14 +36,14 @@ class TeachersController extends Controller
         }
         $class = ClassModel::where('class_name', $request->class_name)->first();
         if (!$class) {
-            \Log::info('Teacher created failed');
+            // \Log::info('Teacher created failed');
             return redirect()->route('teacher.create')->with('error', 'Class not found');
         }
         TeacherModel::create([
             'name' => $request->name,
             'class_id' => $class->id,
         ]);
-        \Log::info('Teacher created successfully');
+        // \Log::info('Teacher created successfully');
         return redirect()->route('teacher.index')->with('success', 'Teacher created successfully');
     }
 
@@ -67,13 +67,13 @@ class TeachersController extends Controller
         $teacher = TeacherModel::findOrFail($id);
         $kelas = ClassModel::where('class_name', $request->class_name)->first();
         if(!$kelas) {
-            \Log::info('Teacher updated failed');
+            // \Log::info('Teacher updated failed');
             return redirect()->route('teacher.edit', $id)->with('error', 'Class not found');
         }
         $teacher->name = $request->name;
         $teacher->class_id = $kelas->id;
         $teacher->save();
-        \Log::info('Teacher updated successfully');
+        // \Log::info('Teacher updated successfully');
         return redirect()->route('teacher.index')->with('success', 'Teacher updated successfully');
     }
 
@@ -81,7 +81,7 @@ class TeachersController extends Controller
         DB::transaction(function () use ($id) {
             $teacher = TeacherModel::findOrFail($id);
             if(!$teacher) {
-                \Log::info('Teacher deleted failed');
+                // \Log::info('Teacher deleted failed');
                 throw new \Exception('Teacher not found');
             }
             $teacher->delete();

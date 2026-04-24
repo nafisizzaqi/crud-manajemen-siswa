@@ -5,6 +5,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TeachersController;
+use App\Http\Controllers\ParentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -53,6 +54,18 @@ Route::put('/teacher/update/{id}', [TeachersController::class, 'update'])->middl
 Route::delete('/teacher/delete/{id}', [TeachersController::class, 'destroy'])->middleware(['auth', 'verified'])->name('teacher.destroy');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::post('/parent/create', [ParentController::class, 'store'])->middleware(['auth', 'verified'])->name('parent.store');
+
+Route::get('/parent/create', [ParentController::class, 'create'])->middleware(['auth', 'verified'])->name('parent.create');
+
+Route::get('/parent', [ParentController::class, 'index'])->middleware(['auth', 'verified'])->name('parent.index');
+
+Route::get('/parent/edit/{id}', [ParentController::class, 'edit'])->middleware(['auth', 'verified'])->name('parent.edit');
+
+Route::put('/parent/update/{id}', [ParentController::class, 'update'])->middleware(['auth', 'verified'])->name('parent.update');
+
+Route::delete('/parent/delete/{id}', [ParentController::class, 'destroy'])->middleware(['auth', 'verified'])->name('parent.destroy');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

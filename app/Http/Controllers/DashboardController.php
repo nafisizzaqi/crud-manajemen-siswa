@@ -11,7 +11,7 @@ class DashboardController extends Controller
 {
     public function index() {
         $students = StudentModel::with('class')->orderBy('class_id', 'asc')->get();
-        $teachers = TeacherModel::with('class')->orderBy('class_id', 'asc')->get();
+        $teachers = TeacherModel::with('class')->orderBy('class_id', 'desc')->get();
         $groupData = array_merge($students->toArray(), $teachers->toArray());
         $groupData = collect($groupData)->groupBy('class.class_name')->values()->toArray();
         return Inertia::render('Dashboard/Index', [
